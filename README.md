@@ -60,6 +60,6 @@ O controle será inspirado em um dos relógios que Ben 10 utiliza, o [Ultimatrix
 ### **Proposta Inicial**
 ---
 
-![Proposta](proposta_controle.png)
+![Proposta](Modelo_Controle.png)
 
 ---
