@@ -1,1 +1,10 @@
+.gitignore
 build/
+env
+bin/
+venv/
+__pycache__/
+
+
+
+
