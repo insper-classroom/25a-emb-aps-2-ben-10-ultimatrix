@@ -113,12 +113,10 @@ void ptc_task(void *p) {
             if (delta > 0) {
                 // Giro horário 
                 envio = 5;
-                printf("Giro horario\n");
                 xQueueSend(xQueueControle, &envio, 0); // Envia p fila se girou horario
             } else {
                 // Giro anti-horário
                 envio = 6;
-                printf("Giro anti-horario\n");
                 xQueueSend(xQueueControle, &envio, 0); // Envia p fila se girou anti-horario
             }
             last_result = result;
@@ -166,31 +164,33 @@ void pressure_task(void *p) {
 
 void serial_task(void *p){
     int received_data;
-    uint8_t valor;
-    uint8_t tipo;
+    uint8_t valor = 0;
+    uint8_t tipo = 0;
     uint8_t eop = (uint8_t)0xFF;
     while(1){
         if(xQueueReceive(xQueueControle, &received_data, 0)){
             if(received_data <= 4){
-                uint8_t tipo = (uint8_t)3;
-                uint8_t valor = (uint8_t)received_data;
+                tipo = (uint8_t)3;
+                valor = (uint8_t)received_data;
             }else if (received_data == 7){
-                uint8_t tipo = (uint8_t)2;
-                uint8_t valor = (uint8_t)0;
-            }else{
-                uint8_t tipo = (uint8_t)1;
-                uint8_t valor = (uint8_t)(received_data-4);
+                tipo = (uint8_t)2;
+                valor = (uint8_t)0;
+            }else if (received_data == 5 || received_data == 6){
+                tipo = (uint8_t)(1 & 0xFF);
+                valor = (uint8_t)(received_data-4 & 0xFF);
             }
-
+            uart_putc_raw(uart0, (uint8_t)0xFF);
             uart_putc_raw(uart0, tipo);
             uart_putc_raw(uart0, valor);
             uart_putc_raw(uart0, eop);
+            
         }
+        
     }
 }
 
 int main() {
-    stdio_init_all();
+u    stdio_init_all();
     adc_init();
 
     uart_init(uart0, 115200);
@@ -206,7 +206,7 @@ int main() {
 
     xTaskCreate(btn_task, "Btn", 4095, NULL, 1, NULL);
     xTaskCreate(ptc_task, "Potenciometro", 4095, NULL, 1, NULL);
-    xTaskCreate(pressure_task, "Pressão", 4095, NULL, 1, NULL);
+    // xTaskCreate(pressure_task, "Pressão", 4095, NULL, 1, NULL);
     xTaskCreate(serial_task, "Serial", 4095, NULL, 1, NULL);
 
     vTaskStartScheduler();
