@@ -1,51 +1,52 @@
 import sys
 import glob
 import serial
-import pyautogui
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 from time import sleep
+from pynput.keyboard import Controller
 
+keyboard = Controller()
 def controla_jogo(tipo, value):
     """Realiza ações do controle dentro do jogo."""
     if tipo == 1:
         """Roda o relógio"""
         if value == 1:
             # Esquerda
-            pyautogui.press('u')
+            keyboard.press('u')
         if value == 2:
             # Direita
-            pyautogui.press('i')
+            keyboard.press('i')
     elif tipo == 2:
         if value == 1:
             # esquerda
-            pyautogui.press('si')
+            keyboard.press('s')
         if value == 2:
             # direita
-            pyautogui.press('w')
+            keyboard.press('w')
         if value == 3:
             # baixo
-            pyautogui.press('a')
+            keyboard.press('a')
         if value == 4:
             # cima
-            pyautogui.press('d')
+            keyboard.press('d')
     elif tipo == 3:
         if value == 5:
             # Vira alien
-            pyautogui.press('o')
+            keyboard.press('o')
         if value == 4:
             # heavy atack
-            pyautogui.press('l')
+            keyboard.press('l') 
         if value == 2:
             # special atack
-            pyautogui.press('h')
+            keyboard.press('h')
         if value == 3:
             # light atack
-            pyautogui.press('j')
+            keyboard.press('j')
         if value == 1:
             # Pula
-            pyautogui.press('k')
+            keyboard.press('k')
 def controle(ser):
     """
     Loop principal que lê bytes da porta serial em loop infinito.
