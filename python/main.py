@@ -12,27 +12,40 @@ def controla_jogo(tipo, value):
     if tipo == 1:
         """Roda o relógio"""
         if value == 1:
-            # Esquereda
+            # Esquerda
             pyautogui.press('u')
         if value == 2:
             # Direita
             pyautogui.press('i')
     elif tipo == 2:
-        # Macro. Pular e Ataque pesado
-        pyautogui.press(['k','h'])
-    elif tipo == 3:
-        if value == 4:
-            # Confirma alien
-            pyautogui.press('o')
-        if value == 2:
-            # Save state
-            pyautogui.press('f1')
-        if value == 3:
-            # Load State
-            pyautogui.press('f3')
         if value == 1:
-            # Pause/Start
-            pyautogui.press('p')
+            # esquerda
+            pyautogui.press('si')
+        if value == 2:
+            # direita
+            pyautogui.press('w')
+        if value == 3:
+            # baixo
+            pyautogui.press('a')
+        if value == 4:
+            # cima
+            pyautogui.press('d')
+    elif tipo == 3:
+        if value == 5:
+            # Vira alien
+            pyautogui.press('o')
+        if value == 4:
+            # heavy atack
+            pyautogui.press('l')
+        if value == 2:
+            # special atack
+            pyautogui.press('h')
+        if value == 3:
+            # light atack
+            pyautogui.press('j')
+        if value == 1:
+            # Pula
+            pyautogui.press('k')
 def controle(ser):
     """
     Loop principal que lê bytes da porta serial em loop infinito.
@@ -102,6 +115,9 @@ def conectar_porta(port_name, root, botao_conectar, status_label, mudar_cor_circ
 
     try:
         ser = serial.Serial(port_name, 115200, timeout=1)
+        #use 33 em binario no ser.write
+        ser.write(b'\x21')  # Envia byte de sincronização para o dispositivo
+        
         status_label.config(text=f"Conectado em {port_name}", foreground="green")
         mudar_cor_circulo("green")
         botao_conectar.config(text="Conectado")  # Update button text to indicate connection
