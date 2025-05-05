@@ -6,6 +6,7 @@ from tkinter import ttk
 from tkinter import messagebox
 from time import sleep
 from pynput.keyboard import Controller
+import time
 
 keyboard = Controller()
 def controla_jogo(tipo, value):
@@ -15,38 +16,52 @@ def controla_jogo(tipo, value):
         if value == 1:
             # Esquerda
             keyboard.press('u')
+            keyboard.release('u')
         if value == 2:
             # Direita
             keyboard.press('i')
+            keyboard.release('i')
     elif tipo == 2:
         if value == 1:
             # esquerda
             keyboard.press('s')
+            keyboard.release('s')
         if value == 2:
             # direita
             keyboard.press('w')
+            keyboard.release('w')
         if value == 3:
             # baixo
             keyboard.press('a')
+            keyboard.release('a')
         if value == 4:
             # cima
             keyboard.press('d')
+            keyboard.release('d')
     elif tipo == 3:
         if value == 5:
             # Vira alien
             keyboard.press('o')
+            keyboard.release('o')
         if value == 4:
             # heavy atack
             keyboard.press('l') 
+            keyboard.release('l')
         if value == 2:
             # special atack
             keyboard.press('h')
+            keyboard.release('h')
         if value == 3:
             # light atack
             keyboard.press('j')
+            keyboard.release('j')
         if value == 1:
             # Pula
             keyboard.press('k')
+            keyboard.release('k')
+    print("dormindo")
+    time.sleep(0.2)
+    print("acordou")
 def controle(ser):
     """
     Loop principal que lê bytes da porta serial em loop infinito.

@@ -81,17 +81,17 @@ void x_task(void *p) {
         value = filtro(value);
  
         int envio;
-        if (value < 0) {
-            envio = 8;
-        } else {
-            envio = 9;
+        //printf("X: %d\n", value);
+        if (modulo(value)>150){
+            if (value < -50) {
+                envio = 8;
+            } else if (value> 45){
+                envio = 9;
+            }
+            xQueueSend(xQueueControle, &envio, 0);
+            vTaskDelay(pdMS_TO_TICKS(150));
         }
-
-
-        if (value != 0) {
-            xQueueSend(xQueueControle, &envio, pdMS_TO_TICKS(50));
-        }
-        vTaskDelay(pdMS_TO_TICKS(50));
+        
     }
 }
 
@@ -122,16 +122,18 @@ void y_task(void *p) {
         value = filtro(value);
 
         int envio;
-        if (value < 0) {
-            envio = 10;
-        } else {
-            envio = 11;
+        //printf("value: %d\n", value);
+        if (modulo(value)>150){
+            if (value < -150) {
+                envio = 10;
+            } else if (value > 150){
+                envio = 11;
+            }
+            xQueueSend(xQueueControle, &envio, 0);
+            vTaskDelay(pdMS_TO_TICKS(150));
         }
-
-        if (value != 0) {
-            xQueueSend(xQueueControle, &envio, pdMS_TO_TICKS(50));
-        }
-        vTaskDelay(pdMS_TO_TICKS(50));
+        
+        
     }
 }
 
@@ -181,23 +183,23 @@ void btn_task(void *p) {
     gpio_set_irq_enabled_with_callback(BTN_HEROI, GPIO_IRQ_EDGE_FALL, true, &btn_callback);
     
     while (1) {
-        if(xSemaphoreTake(xSemaphore_blue, pdMS_TO_TICKS(500)) == pdTRUE) {
+        if(xSemaphoreTake(xSemaphore_blue, pdMS_TO_TICKS(50)) == pdTRUE) {
             botao = 1;
             xQueueSend(xQueueControle, &botao, 0); // Envia p fila se clicou no start
-        }else if(xSemaphoreTake(xSemaphore_green, pdMS_TO_TICKS(500)) == pdTRUE) {
+        }else if(xSemaphoreTake(xSemaphore_green, pdMS_TO_TICKS(50)) == pdTRUE) {
             botao = 2;
             xQueueSend(xQueueControle, &botao, 0); // Envia p fila se clicou no save
-        } else if(xSemaphoreTake(xSemaphore_yellow, pdMS_TO_TICKS(500)) == pdTRUE) {
+        } else if(xSemaphoreTake(xSemaphore_yellow, pdMS_TO_TICKS(50)) == pdTRUE) {
             botao = 3;
             xQueueSend(xQueueControle, &botao, 0); // Envia p fila se clicou no load
-        } else if(xSemaphoreTake(xSemaphore_red, pdMS_TO_TICKS(500)) == pdTRUE) {
+        } else if(xSemaphoreTake(xSemaphore_red, pdMS_TO_TICKS(50)) == pdTRUE) {
             botao = 4;
             xQueueSend(xQueueControle, &botao, 0); // Envia p fila se clicou no heroi
-        } else if (xSemaphoreTake(xSemaphore_hero, pdMS_TO_TICKS(500)) == pdTRUE) {
+        } else if (xSemaphoreTake(xSemaphore_hero, pdMS_TO_TICKS(50)) == pdTRUE) {
             botao = 5;
             xQueueSend(xQueueControle, &botao, 0); // Envia p fila se clicou no heroi
+            
         }
-        vTaskDelay(pdMS_TO_TICKS(50)); // Debounce e delay de leitura
     }
 
 }
@@ -280,7 +282,7 @@ void uart_task(void *p){
 }
 
 int main() {
-    stdio_init_all();
+        stdio_init_all();
     adc_init();
 
     uart_init(uart0, 115200);
