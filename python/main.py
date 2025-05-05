@@ -5,60 +5,60 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 from time import sleep
-from pynput.keyboard import Controller
+import pyautogui as keyboard
 import time
 
-keyboard = Controller()
+
 def controla_jogo(tipo, value):
     """Realiza ações do controle dentro do jogo."""
     if tipo == 1:
         """Roda o relógio"""
         if value == 1:
             # Esquerda
-            keyboard.press('u')
-            keyboard.release('u')
+            keyboard.keyDown('u')
+            keyboard.keyUp('u')
         if value == 2:
             # Direita
-            keyboard.press('i')
-            keyboard.release('i')
+            keyboard.keyDown('i')
+            keyboard.keyUp('i')
     elif tipo == 2:
         if value == 1:
             # esquerda
-            keyboard.press('s')
-            keyboard.release('s')
+            keyboard.keyDown('s')
+            keyboard.keyUp('s')
         if value == 2:
             # direita
-            keyboard.press('w')
-            keyboard.release('w')
+            keyboard.keyDown('w')
+            keyboard.keyUp('w')
         if value == 3:
             # baixo
-            keyboard.press('a')
-            keyboard.release('a')
+            keyboard.keyDown('a')
+            keyboard.keyUp('a')
         if value == 4:
             # cima
-            keyboard.press('d')
-            keyboard.release('d')
+            keyboard.keyDown('d')
+            keyboard.keyUp('d')
     elif tipo == 3:
         if value == 5:
             # Vira alien
-            keyboard.press('o')
-            keyboard.release('o')
+            keyboard.keyDown('o')
+            keyboard.keyUp('o')
         if value == 4:
             # heavy atack
-            keyboard.press('l') 
-            keyboard.release('l')
+            keyboard.keyDown('l') 
+            keyboard.keyUp('l')
         if value == 2:
             # special atack
-            keyboard.press('h')
-            keyboard.release('h')
+            keyboard.keyDown('h')
+            keyboard.keyUp('h')
         if value == 3:
             # light atack
-            keyboard.press('j')
-            keyboard.release('j')
+            keyboard.keyDown('j')
+            keyboard.keyUp('j')
         if value == 1:
             # Pula
-            keyboard.press('k')
-            keyboard.release('k')
+            keyboard.keyDown('k')
+            keyboard.keyUp('k')
     print("dormindo")
     time.sleep(0.2)
     print("acordou")

@@ -209,7 +209,7 @@ void ptc_task(void *p) {
     adc_gpio_init(28); 
 
     
-    uint16_t result;
+    uint16_t result = adc_read(); // Leitura inicial do ADC
     int envio;
     uint16_t last_result = adc_read(); // Última leitura do ADC
 
@@ -264,12 +264,12 @@ void uart_task(void *p){
             if(received_data <= 5){
                 tipo = (uint8_t)3;
                 valor = (uint8_t)received_data;
-            }else if (received_data > 7){
-                tipo = (uint8_t)2;
-                valor = (uint8_t)received_data-7;
             }else if (received_data == 6 || received_data == 7){
                 tipo = (uint8_t)(1 & 0xFF);
                 valor = (uint8_t)(received_data-5 & 0xFF);
+            }else{
+                tipo = (uint8_t)2;
+                valor = (uint8_t)received_data-7;
             }
             uart_putc_raw(uart0, (uint8_t)0xFF);
             uart_putc_raw(uart0, tipo);
