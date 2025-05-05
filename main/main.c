@@ -209,7 +209,6 @@ void ptc_task(void *p) {
     adc_gpio_init(28); 
 
     
-    uint16_t result = adc_read(); // Leitura inicial do ADC
     int envio;
     uint16_t last_result = adc_read(); // Última leitura do ADC
 
@@ -224,7 +223,7 @@ void ptc_task(void *p) {
 
     while (1) {
         adc_select_input(2); 
-        result = adc_read(); 
+        uint16_t result = adc_read(); // Leitura inicial do ADC
 
         int16_t delta = result - last_result;
         if (modulo(delta) > limiar) {
@@ -245,8 +244,8 @@ void ptc_task(void *p) {
 
 void uart_task(void *p){
     int received_data;
-    uint8_t valor = 0;
-    uint8_t tipo = 0;
+    uint8_t valor;
+    uint8_t tipo;
     uint8_t eop = (uint8_t)0xFF;
     //inicializar o led
     gpio_init(LED);
